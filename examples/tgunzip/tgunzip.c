@@ -65,6 +65,10 @@ int main(int argc, char *argv[])
 
     uzlib_init();
 
+#ifdef __AFL_HAVE_MANUAL_CONTROL
+    __AFL_INIT();
+#endif
+
     /* -- open files -- */
 
     if ((fin = fopen(argv[1], "rb")) == NULL) exit_error("source file");
