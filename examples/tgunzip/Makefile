@@ -13,7 +13,7 @@ target  = tgunzip
 objects = tgunzip.o
 libs    = ../../lib/libtinf.a
 
-cflags  = -Wall -g -I../../src
+cflags  = -Wall -g -I../../src -fsanitize=undefined -fno-sanitize-recover=undefined
 ldflags = $(cflags) -Wl,-Map,ld.map
 
 .PHONY: all clean

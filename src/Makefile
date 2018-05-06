@@ -13,7 +13,9 @@ target  = ../lib/libtinf.a
 objects = tinflate.o tinfgzip.o tinfzlib.o adler32.o crc32.o \
     defl_static.o genlz77.o
 
-cflags  = -Wall -g
+headers = $(wildcard *.h)
+
+cflags  = -Wall -g -fsanitize=undefined -fno-sanitize-recover=undefined
 ldflags = $(cflags)
 
 .PHONY: all clean
@@ -25,7 +27,7 @@ $(target): $(objects)
 	ar -frsv $@ $^
 	ranlib $@
 
-%.o : %.c
+%.o : %.c $(HEADERS)
 	/home/jepler/src/afl-2.52b/afl-clang-fast $(cflags) -o $@ -c $<
 
 %.o : %.nas
