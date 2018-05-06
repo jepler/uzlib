@@ -172,6 +172,7 @@ static void tinf_build_tree(TINF_TREE *t, const unsigned char *lengths, unsigned
 unsigned char uzlib_get_byte(TINF_DATA *d)
 {
     if (d->source) {
+        if(d->source >= d->esource) longjmp(d->env, TINF_DATA_ERROR);
         return *d->source++;
     }
     return d->readSource(d);
@@ -450,6 +451,9 @@ void uzlib_uncompress_init(TINF_DATA *d, void *dict, unsigned int dictLen)
 /* inflate next byte of compressed stream */
 int uzlib_uncompress(TINF_DATA *d)
 {
+    int err;
+    if((err = setjmp(d->env)) != 0) return err;
+
     do {
         int res;
 
@@ -513,6 +517,8 @@ int uzlib_uncompress_chksum(TINF_DATA *d)
 
     if (res < 0) return res;
 
+    int err;
+    if((err = setjmp(d->env)) != 0) return err;
     switch (d->checksum_type) {
 
     case TINF_CHKSUM_ADLER:

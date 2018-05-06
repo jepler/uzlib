@@ -12,6 +12,7 @@
 #define TINF_H_INCLUDED
 
 #include <stdint.h>
+#include <setjmp.h>
 
 /* calling convention */
 #ifndef TINFCC
@@ -81,6 +82,8 @@ typedef struct TINF_DATA {
 
    TINF_TREE ltree; /* dynamic length/symbol tree */
    TINF_TREE dtree; /* dynamic distance tree */
+
+    jmp_buf env;
 } TINF_DATA;
 
 #define TINF_PUT(d, c) \

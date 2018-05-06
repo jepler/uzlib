@@ -58,6 +58,8 @@ uint16_t tinf_get_uint16(TINF_DATA *d)
 
 int uzlib_gzip_parse_header(TINF_DATA *d)
 {
+    int err;
+    if((err = setjmp(d->env)) != 0) return err;
     unsigned char flg;
 
     /* -- check format -- */
